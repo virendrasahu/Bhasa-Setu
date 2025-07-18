@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -55,6 +56,9 @@ export default function ChatLayout() {
   const handleSendMessage = useCallback(async (text: string) => {
     setIsSending(true);
 
+    const shouldTransliterate = useTransliteration || targetLang === 'Kannada' || targetLang === 'Telugu';
+    const finalTargetLang = useTransliteration ? transliterationTarget.value : targetLang;
+
     const userMessageId = new Date().toISOString();
     const userMessage: Message = {
       id: userMessageId,
@@ -62,7 +66,7 @@ export default function ChatLayout() {
       originalText: text,
       translatedText: "",
       sourceLang: sourceLang,
-      targetLang: useTransliteration ? transliterationTarget.value : targetLang,
+      targetLang: finalTargetLang,
       timestamp: new Date(),
       isTranslating: true,
     };
@@ -71,9 +75,8 @@ export default function ChatLayout() {
 
     try {
       let translationResult;
-      const finalTargetLang = useTransliteration ? transliterationTarget.value : targetLang;
-
-      if (useTransliteration) {
+      
+      if (shouldTransliterate) {
         const { transliteratedText } = await transliterateInput({
           text,
           sourceLanguage: sourceLang,
@@ -100,13 +103,15 @@ export default function ChatLayout() {
       // Simulate bot reply
       setTimeout(async () => {
         const botMessageId = new Date().toISOString() + "-bot";
+        
+        // Bot always replies in the original source language, not transliterated
         const botMessage: Message = {
             id: botMessageId,
             sender: "bot",
             originalText: translationResult,
             translatedText: "",
-            sourceLang: targetLang,
-            targetLang: sourceLang,
+            sourceLang: targetLang, // The "original" for the bot is the user's translation
+            targetLang: sourceLang, // The target for the bot is the user's original source
             timestamp: new Date(),
             isTranslating: true,
         };

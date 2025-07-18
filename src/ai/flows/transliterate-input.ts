@@ -1,3 +1,4 @@
+
 // src/ai/flows/transliterate-input.ts
 'use server';
 
@@ -15,7 +16,7 @@ import {z} from 'genkit';
 const TransliterateInputSchema = z.object({
   text: z.string().describe('The text to transliterate.'),
   sourceLanguage: z.string().describe('The source language of the text.'),
-  targetLanguage: z.string().describe('The target language to transliterate to (e.g., Hindi in Roman script).'),
+  targetLanguage: z.string().describe('The target language to transliterate to.'),
 });
 
 export type TransliterateInputType = z.infer<typeof TransliterateInputSchema>;
@@ -36,9 +37,17 @@ const transliteratePrompt = ai.definePrompt({
   output: {schema: TransliterateOutputSchema},
   prompt: `Translate the following sentence from {{sourceLanguage}} to {{targetLanguage}}, but output it in English letters (transliteration). Respond only with the transliterated message.
 
-Example:
+Example for Hindi:
 Input: "How are you?"
 Output: "Aap kaise hain?"
+
+Example for Kannada:
+Input: "How are you?"
+Output: "Neevu hegiddeera?"
+
+Example for Telugu:
+Input: "How are you?"
+Output: "Meeru ela unnaru?"
 
 Your turn:
 Input: "{{text}}"
