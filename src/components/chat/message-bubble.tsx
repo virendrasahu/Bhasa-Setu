@@ -1,12 +1,13 @@
 "use client";
 
-import { Copy, Loader2 } from "lucide-react";
+import { Copy, Loader2, User as UserIcon, Bot } from "lucide-react";
 import { Message } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 
 interface MessageBubbleProps {
   message: Message;
@@ -29,6 +30,13 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <div className={cn("flex w-full items-end gap-2", isUser ? "justify-end" : "justify-start")}>
+       {!isUser && (
+         <Avatar className="h-8 w-8">
+            <AvatarFallback className="bg-primary text-primary-foreground">
+                <Bot className="h-5 w-5"/>
+            </AvatarFallback>
+         </Avatar>
+       )}
       <Card className={cn(
         "max-w-xs md:max-w-md lg:max-w-lg w-fit rounded-2xl shadow-md",
         isUser ? "bg-primary text-primary-foreground rounded-br-lg" : "bg-card rounded-bl-lg"
@@ -60,6 +68,13 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           )}
         </CardContent>
       </Card>
+      {isUser && (
+         <Avatar className="h-8 w-8">
+            <AvatarFallback>
+                <UserIcon className="h-5 w-5"/>
+            </AvatarFallback>
+         </Avatar>
+       )}
     </div>
   );
 }
