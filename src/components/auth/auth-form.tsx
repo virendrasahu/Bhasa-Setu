@@ -44,6 +44,8 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Password is required'),
 });
 
+const combinedSchema = signUpSchema.or(loginSchema);
+
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,12 +54,13 @@ export default function AuthForm() {
 
   const formSchema = isLogin ? loginSchema : signUpSchema;
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof combinedSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
-      ...(isLogin ? {} : { name: '', mobile: '' }),
+      name: '',
+      mobile: '',
     },
   });
 
@@ -93,6 +96,17 @@ export default function AuthForm() {
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  // Reset form when switching between login and sign up
+  const toggleFormType = () => {
+    setIsLogin(!isLogin);
+    form.reset({
+      email: '',
+      password: '',
+      name: '',
+      mobile: '',
+    });
   };
 
   return (
@@ -182,10 +196,7 @@ export default function AuthForm() {
           <Button
             variant="link"
             className="pl-1"
-            onClick={() => {
-              setIsLogin(!isLogin);
-              form.reset();
-            }}
+            onClick={toggleFormType}
           >
             {isLogin ? 'Sign Up' : 'Login'}
           </Button>
