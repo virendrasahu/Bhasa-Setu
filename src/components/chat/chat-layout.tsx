@@ -16,7 +16,7 @@ import { MessageForm } from "./message-form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { ArrowRightLeft, LogOut } from "lucide-react";
+import { ArrowRightLeft, LogOut, MessageSquareQuote } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface ChatLayoutProps {
@@ -38,7 +38,7 @@ export default function ChatLayout({ user }: ChatLayoutProps) {
       {
         id: "welcome",
         sender: "bot",
-        originalText: `Welcome, ${user?.displayName || 'User'}! How can I help you translate today?`,
+        originalText: `Welcome to BhashaSetu, ${user?.displayName || 'User'}! How can I help you translate today?`,
         translatedText: `नमस्ते, ${user?.displayName || 'User'}! आज मैं आपकी अनुवाद में कैसे मदद कर सकता हूँ?`,
         sourceLang: 'English',
         targetLang: 'Hindi',
@@ -175,54 +175,11 @@ export default function ChatLayout({ user }: ChatLayoutProps) {
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      <header className="flex items-center justify-between p-4 border-b bg-card gap-4 flex-wrap shadow-sm">
-        <div className="flex items-center gap-4 flex-wrap">
-            <div className="flex items-center gap-4">
-                <div className="flex flex-col">
-                    <Label htmlFor="source-lang" className="mb-1 text-xs text-muted-foreground">From</Label>
-                    <Select value={sourceLang} onValueChange={setSourceLang} disabled={useTransliteration}>
-                        <SelectTrigger className="w-[140px]" id="source-lang">
-                            <SelectValue placeholder="Source Language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {languages.map((lang) => (
-                            <SelectItem key={lang.value} value={lang.value} disabled={lang.value === targetLang}>
-                                {lang.label}
-                            </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-                <Button variant="ghost" size="icon" className="mt-5" onClick={handleSwapLanguages} disabled={useTransliteration}>
-                    <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
-                </Button>
-                <div className="flex flex-col">
-                    <Label htmlFor="target-lang" className="mb-1 text-xs text-muted-foreground">To</Label>
-                    <Select value={targetLang} onValueChange={setTargetLang} disabled={useTransliteration}>
-                        <SelectTrigger className="w-[140px]" id="target-lang">
-                            <SelectValue placeholder="Target Language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {availableTargetLangs.map((lang) => (
-                            <SelectItem key={lang.value} value={lang.value} disabled={lang.value === sourceLang}>
-                                {lang.label}
-                            </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
-
-            <div className="flex items-center space-x-2 pt-5">
-                <Switch
-                    id="transliteration-mode"
-                    checked={useTransliteration}
-                    onCheckedChange={setUseTransliteration}
-                />
-                <Label htmlFor="transliteration-mode">Transliterate to Hindi (Roman)</Label>
-            </div>
+       <header className="flex items-center justify-between p-4 border-b bg-card shadow-sm">
+        <div className="flex items-center gap-2">
+            <MessageSquareQuote className="h-8 w-8 text-primary" />
+            <h1 className="text-xl font-bold text-primary">BhashaSetu</h1>
         </div>
-        
         <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground hidden sm:inline">{user?.email}</span>
             <Button variant="outline" size="icon" onClick={logout}>
@@ -231,6 +188,52 @@ export default function ChatLayout({ user }: ChatLayoutProps) {
             </Button>
         </div>
       </header>
+      <div className="flex items-center justify-center p-4 border-b bg-card gap-4 flex-wrap">
+          <div className="flex items-center gap-4 flex-wrap justify-center">
+              <div className="flex flex-col">
+                  <Label htmlFor="source-lang" className="mb-1 text-xs text-muted-foreground">From</Label>
+                  <Select value={sourceLang} onValueChange={setSourceLang} disabled={useTransliteration}>
+                      <SelectTrigger className="w-[140px]" id="source-lang">
+                          <SelectValue placeholder="Source Language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                          {languages.map((lang) => (
+                          <SelectItem key={lang.value} value={lang.value} disabled={lang.value === targetLang}>
+                              {lang.label}
+                          </SelectItem>
+                          ))}
+                      </SelectContent>
+                  </Select>
+              </div>
+              <Button variant="ghost" size="icon" className="mt-5" onClick={handleSwapLanguages} disabled={useTransliteration}>
+                  <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
+              </Button>
+              <div className="flex flex-col">
+                  <Label htmlFor="target-lang" className="mb-1 text-xs text-muted-foreground">To</Label>
+                  <Select value={targetLang} onValueChange={setTargetLang} disabled={useTransliteration}>
+                      <SelectTrigger className="w-[140px]" id="target-lang">
+                          <SelectValue placeholder="Target Language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                          {availableTargetLangs.map((lang) => (
+                          <SelectItem key={lang.value} value={lang.value} disabled={lang.value === sourceLang}>
+                              {lang.label}
+                          </SelectItem>
+                          ))}
+                      </SelectContent>
+                  </Select>
+              </div>
+          </div>
+
+          <div className="flex items-center space-x-2 pt-5 sm:pt-0">
+              <Switch
+                  id="transliteration-mode"
+                  checked={useTransliteration}
+                  onCheckedChange={setUseTransliteration}
+              />
+              <Label htmlFor="transliteration-mode">Transliterate to Hindi (Roman)</Label>
+          </div>
+      </div>
 
       <main className="flex-1 flex flex-col">
         <MessageList messages={messages} />
