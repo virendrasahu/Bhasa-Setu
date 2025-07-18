@@ -34,7 +34,15 @@ const transliteratePrompt = ai.definePrompt({
   name: 'transliteratePrompt',
   input: {schema: TransliterateInputSchema},
   output: {schema: TransliterateOutputSchema},
-  prompt: `Translate the following message from {{sourceLanguage}} to {{targetLanguage}} and respond only with the translated message:\n\n{{text}}`,
+  prompt: `Translate the following sentence from {{sourceLanguage}} to {{targetLanguage}}, but output it in English letters (transliteration). Respond only with the transliterated message.
+
+Example:
+Input: "How are you?"
+Output: "Aap kaise hain?"
+
+Your turn:
+Input: "{{text}}"
+Output:`,
 });
 
 const transliterateFlow = ai.defineFlow(
