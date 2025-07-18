@@ -84,7 +84,9 @@ export default function AuthForm() {
           email: signUpValues.email,
           mobile: signUpValues.mobile,
         });
-        toast({ title: 'Sign Up Successful!' });
+        toast({
+          title: 'Account created successfully!',
+        });
         router.push('/');
       }
     } catch (error: any) {
@@ -131,7 +133,7 @@ export default function AuthForm() {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Name" {...field} />
+                        <Input placeholder="Your Name" {...field} value={field.value || ''} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -144,7 +146,7 @@ export default function AuthForm() {
                     <FormItem>
                       <FormLabel>Mobile Number</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Mobile Number" {...field} />
+                        <Input placeholder="Your Mobile Number" {...field} value={field.value || ''} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
