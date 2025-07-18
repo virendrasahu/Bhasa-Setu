@@ -35,7 +35,7 @@ export function MessageList({ messages }: MessageListProps) {
       {messages.length === 0 && (
         <div className="flex flex-col items-center justify-center h-full text-muted-foreground text-center p-4">
             <Bot className="w-16 h-16 mb-4 text-primary/50"/>
-            <p className="text-lg font-medium">Welcome to LinguaLink!</p>
+            <p className="text-lg font-medium">Welcome to BhashaSetu!</p>
             <p className="max-w-xs">Select your languages above and send a message to start translating.</p>
         </div>
       )}

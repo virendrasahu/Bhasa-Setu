@@ -232,9 +232,13 @@ export default function ChatLayout({ user }: ChatLayoutProps) {
         </div>
       </header>
 
-      <MessageList messages={messages} />
-      
-      <MessageForm onSendMessage={handleSendMessage} isSending={isSending} />
+      <main className="flex-1 flex flex-col">
+        <MessageList messages={messages} />
+        <MessageForm onSendMessage={handleSendMessage} isSending={isSending} />
+      </main>
+      <footer className="p-2 text-center text-xs text-muted-foreground border-t bg-card">
+        Created By Virendra
+      </footer>
     </div>
   );
 }
